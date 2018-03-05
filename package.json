@@ -1,0 +1,13 @@
+{
+  "name": "wunderlist-trigger",
+  "version": "0.0.1",
+  "description": "Add items to Wunderlist by copying text to your clipboard ",
+  "main": "main.js",
+  "repository": "git@github.com:seanlerner/wunderlist-trigger.git",
+  "author": "Sean Lerner <sean@@smallcity.ca>",
+  "license": "MIT",
+  "dependencies": {
+    "wunderlist": "^0.1.3",
+    "uglify-js": "2.6.0"
+  }
+}
