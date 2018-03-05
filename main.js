@@ -1,8 +1,9 @@
 module.exports = class {
 
   constructor() {
-    this.trigger = 'wl'
-    this.dir     = path.join(CT.dir.triggers, 'wunderlist-trigger', 'classes', '/')
+    this.trigger   = 'wl'
+    this.nice_name = 'Wunderlist'
+    this.dir       = path.join(CT.dir.triggers, 'wunderlist-trigger', 'classes', '/')
 
     if (this.access_token)
       this.setup()

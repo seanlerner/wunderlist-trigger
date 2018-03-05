@@ -53,10 +53,16 @@ module.exports = class {
   }
 
   done(task_data, status_code) {
-    if (status_code == 201)
-      this.resolve(`${task_data.title} added to ${this.list.title}`)
-    else
+    if (status_code != 201) {
       this.done_but_fail(task_data, status_code)
+      return
+    }
+
+    this.resolve({
+      title:    task_data.title,
+      subtitle: 'added to',
+      body:     this.list.title
+    })
   }
 
   done_but_fail(task_data, status_code) {
