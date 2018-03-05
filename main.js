@@ -1,18 +1,11 @@
 module.exports = class {
 
-  test() {
-    CT.electron.clipboard.writeText('')
-    setTimeout(() => CT.electron.clipboard.writeText('wl hey ho'), 350)
-  }
-
   constructor() {
     this.trigger = 'wl'
     this.dir     = path.join(CT.dir.triggers, 'wunderlist-trigger', 'classes', '/')
 
     if (this.access_token)
       this.setup()
-
-    this.test()
   }
 
   run(resolve, reject) {
@@ -41,8 +34,6 @@ module.exports = class {
       accessToken = this.access_token,
       clientID    = 'f6256f525bd401b77460',
       options     = { accessToken, clientID }
-
-      console.log('accessToken', accessToken)
 
     global.wunderlist = new Wunderlist(options)
 
