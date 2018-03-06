@@ -9,10 +9,9 @@ Add items to Wunderlist by copying text to your clipboard .
 1. Signup & Login to your Clip Trigger acccount at <https://clip.smallcity.ca>
 1. Click the `Wunderlist` link and authorize Clip Trigger to use your Wunderlist account
 
-## 2. Download Clip Trigger
+## 2. Setup Clip Trigger
 
-1. [Download Clip Trigger](https://github.com/seanlerner/clip-trigger-disttribution/blob/master/README.md)
-1. Install and open Clip Trigger
+1. [Download and Install Clip Trigger](https://github.com/seanlerner/clip-trigger/blob/master/README.md)
 
 ## 3. Install this trigger
 
