@@ -6,8 +6,9 @@ module.exports = class {
     this.get_lists_and_add_item()
   }
 
-  get_lists_and_add_item(){
-    new CT.triggers.wl.Lists(this.add_item.bind(this), this.reject)
+  get_lists_and_add_item() {
+    log.debug('get_lists_and_add_item')
+    new CT.triggers.wl.Lists(this.add_item.bind(this), this.fail.bind(this))
   }
 
   add_item(lists) {
@@ -73,6 +74,7 @@ module.exports = class {
   }
 
   fail(resp, code) {
+    log.debug(code)
     this.reject(single_line_str({ resp, code }))
   }
 

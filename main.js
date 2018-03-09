@@ -4,9 +4,11 @@ module.exports = class {
     this.trigger   = 'wl'
     this.nice_name = 'Wunderlist'
     this.dir       = path.join(CT.dir.triggers, 'wunderlist-trigger', 'classes', '/')
-
-    if (this.access_token)
-      this.setup()
+    this.AddItem   = require(this.dir + 'add_item')
+    this.Lists     = require(this.dir + 'lists')
+    this.Reset     = require(this.dir + 'reset')
+    this.Setup     = require(this.dir + 'setup')
+    this.setup_wunderlist_api()
   }
 
   run(resolve, reject) {
@@ -14,43 +16,43 @@ module.exports = class {
     this.reject  = reject
     this.command = CT.clipboard.content.split(' ')[0]
 
-    if (this.is_setup)
-      this.run_regular_command()
-    else if (this.command == 'setup')
-      this.get_access_token_from_clip_trigger_server()
-    else
-      reject("Please run 'wl setup' first")
+    switch(this.command) {
+      case 'setup':
+        new this.Setup(this.resolve, this.reject)
+        break
+      case 'reset':
+        new this.Reset(this.resolve, this.reject)
+        break
+      default:
+        if (wunderlist)
+          this.run_regular_command()
+       else
+          this.reject("Please copy 'wl setup' to the clipboard first to get started")
+    }
+
+  run_regular_command()
+
+    switch(this.command) {
+      case 'lists':
+        new this.Lists(this.resolve, this.reject)
+        break
+      default:
+        log.debug('default')
+        new this.AddItem(this.resolve, this.reject)
+    }
   }
 
-  run_regular_command() {
-    if (this.command == 'lists')
-      new this.Lists(this.resolve, this.reject)
-    else
-      new this.AddItem(this.resolve, this.reject)
-  }
-
-  setup() {
+  setup_wunderlist_api() {
     const
       Wunderlist  = require('wunderlist'),
-      accessToken = this.access_token,
+      accessToken = CT.vendor.settings.get('wunderlist_access_token'),
       clientID    = 'f6256f525bd401b77460',
       options     = { accessToken, clientID }
 
-    global.wunderlist = new Wunderlist(options)
-
-    this.Lists    = require(this.dir + 'lists')
-    this.AddItem  = require(this.dir + 'add_item')
-    this.is_setup = true
-  }
-
-  get_access_token_from_clip_trigger_server() {
-    const GetAccessToken = require(this.dir + 'get_access_token')
-    new GetAccessToken(this.resolve, this.reject)
-    this.setup()
-  }
-
-  get access_token() {
-    return CT.vendor.settings.get('wunderlist_access_token')
+    if (accessToken)
+      global.wunderlist = new Wunderlist(options)
+    else
+      global.wunderlist = null
   }
 
 }
