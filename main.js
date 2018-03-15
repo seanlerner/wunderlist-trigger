@@ -11,10 +11,10 @@ module.exports = class {
     this.setup_wunderlist_api()
   }
 
-  run(resolve, reject) {
-    this.resolve = resolve
-    this.reject  = reject
-    this.command = CT.clipboard.content.split(' ')[0]
+  run(trigger_run) {
+    this.resolve = trigger_run.resolve
+    this.reject  = trigger_run.reject
+    this.command = trigger_run.args
 
     switch(this.command) {
       case 'setup':
@@ -30,14 +30,14 @@ module.exports = class {
           this.reject("Please copy 'wl setup' to the clipboard first to get started")
     }
 
-  run_regular_command()
+  }
 
+  run_regular_command() {
     switch(this.command) {
       case 'lists':
         new this.Lists(this.resolve, this.reject)
         break
       default:
-        log.debug('default')
         new this.AddItem(this.resolve, this.reject)
     }
   }
