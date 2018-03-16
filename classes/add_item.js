@@ -1,52 +1,55 @@
 module.exports = class {
 
-  constructor(resolve, reject) {
-    this.resolve = resolve
-    this.reject  = reject
+  constructor(run) {
+    if (!wunderlist) {
+      run.reject("Please copy 'wl setup' to the Clipboard to get started.")
+      return
+    }
+
+    this.run = run
     this.get_lists_and_add_item()
   }
 
   get_lists_and_add_item() {
-    log.debug('get_lists_and_add_item')
-    new CT.triggers.wl.Lists(this.add_item.bind(this), this.fail.bind(this))
+    new Promise(new CT.triggers.wl.Lists().get_lists)
+      .then(this.add_item.bind(this))
+      .catch(this.fail.bind(this))
   }
 
   add_item(lists) {
     this.lists = lists
-    this.set_desired_list()
 
-    const list_id = this.list.id,
-          title   = this.item_title
+    let list = this.get_desired_list_from_first_arg(lists)
+    let title
 
-    wunderlist.http.tasks.create({ list_id, title })
+    if (list) {
+      title = this.all_but_first_arg()
+    } else {
+      list  = this.get_inbox_list(lists)
+      title = this.run.args
+    }
+
+    wunderlist.http.tasks.create({ list_id: list.id, title })
       .done(this.done.bind(this))
       .fail(this.fail.bind(this))
+
   }
 
-  set_desired_list() {
-    const first_word = CT.clipboard.content.split(' ')[0]
+  get_desired_list_from_first_arg(lists) {
+    const
+      first_arg       = this.run.args.split(' ')[0],
+      first_arg_regex = new RegExp(first_arg, 'i')
 
-    this.first_word_regex = new RegExp(first_word, 'i')
-    this.list             = this.lists.find(this.is_desired_list.bind(this))
-
-    if (this.list)
-      this.item_title = this.all_but_first_word()
-    else
-      this.set_to_inbox()
+    return lists.find(list => first_arg_regex.test(list.title))
   }
 
-  is_desired_list(list) {
-    return this.first_word_regex.test(list.title)
+  all_but_first_arg() {
+    const args = this.run.args
+    return args.substr(args.indexOf(' ') + 1)
   }
 
-  all_but_first_word() {
-    const content = CT.clipboard.content
-    return content.substr(content.indexOf(' ') + 1)
-  }
-
-  set_to_inbox() {
-    this.list       = this.lists.find(this.is_inbox)
-    this.item_title = CT.clipboard.content
+  get_inbox_list(lists) {
+    return this.lists.find(this.is_inbox)
   }
 
   is_inbox(list) {
@@ -59,23 +62,29 @@ module.exports = class {
       return
     }
 
-    this.resolve({
+    this.run.resolve({
       title:    task_data.title,
       subtitle: 'added to',
-      body:     this.list.title
+      body:     this.get_list_title_by_id(task_data.list_id)
     })
   }
 
-  done_but_fail(task_data, status_code) {
-    const reason = `Unhandled Wunderlist done task when adding ${task_data.title} to ${this.list.title}. Status code: ${status_code}`
-    new ErrorHandler({ reason, filename: __filename })
-    this.reject(reason)
+  get_list_title_by_id(list_id) {
+    return this.lists.find(list => list.id == list_id).title
+  }
 
+  done_but_fail(task_data, status_code) {
+    const
+      reason   = `Unhandled Wunderlist done task when adding ${task_data.title} to list_id: ${task_data.list_id}. Status code: ${status_code}`,
+      filename = __filename
+
+    new ErrorHandler({ reason, filename })
+
+    this.run.reject(reason)
   }
 
   fail(resp, code) {
-    log.debug(code)
-    this.reject(single_line_str({ resp, code }))
+    this.run.reject(single_line_str({ resp, code }))
   }
 
 }
