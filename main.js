@@ -3,7 +3,7 @@ module.exports = class {
   constructor() {
     this.trigger            = 'wl'
     this.name               = 'Wunderlist'
-    this.classes_dir        = path.join(__dirname, 'classes', '/')
+    this.classes_dir        = path.join(__dirname, 'lib', '/')
     this.AddItem            = require(this.classes_dir + 'add_item')
     this.Lists              = require(this.classes_dir + 'lists')
     this.Reset              = require(this.classes_dir + 'reset')
