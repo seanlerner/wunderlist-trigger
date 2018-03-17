@@ -1,11 +1,12 @@
-clipboard = require('electron').clipboard
-output    = ''
+clipboard          = require('electron').clipboard
+output             = ''
+original_clipboard = clipboard.readText()
 
 const
-  path     = require('path'),
-  spawn    = require('child_process').spawn,
-  log_file = path.join(process.env.HOME, 'Library', 'Logs', 'ClipTrigger', 'log.log'),
-  tail     = spawn('tail', ['-n', '0', '-f', log_file])
+  path  = require('path'),
+  spawn = require('child_process').spawn,
+  log   = path.join(process.env.HOME, 'Library', 'Logs', 'ClipTrigger', 'log.log'),
+  tail  = spawn('tail', ['-n', '0', '-f', log])
 
 tail.stdout.on('data', data => output += data)
 
@@ -48,3 +49,7 @@ ensure_clip_trigger_is_running = () => new Promise((resolve, reject) => {
   wait_for_success('ct ?').then(success)
 
 })
+
+restore_clipboard = () => clipboard.writeText(original_clipboard)
+
+after(restore_clipboard)

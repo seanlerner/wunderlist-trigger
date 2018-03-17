@@ -3,12 +3,12 @@ module.exports = class {
   constructor() {
     this.trigger            = 'wl'
     this.name               = 'Wunderlist'
-    this.classes_dir        = path.join(__dirname, 'lib', '/')
-    this.AddItem            = require(this.classes_dir + 'add_item')
-    this.Lists              = require(this.classes_dir + 'lists')
-    this.Reset              = require(this.classes_dir + 'reset')
-    this.GetAccessToken     = require(this.classes_dir + 'get_access_token')
-    this.SetupWunderlistApi = require(this.classes_dir + 'setup_wunderlist_api')
+    this.lib_dir            = path.join(__dirname, 'lib', '/')
+    this.AddItem            = require(this.lib_dir + 'add_item')
+    this.Lists              = require(this.lib_dir + 'lists')
+    this.Reset              = require(this.lib_dir + 'reset')
+    this.GetAccessToken     = require(this.lib_dir + 'get_access_token')
+    this.SetupWunderlistApi = require(this.lib_dir + 'setup_wunderlist_api')
 
     new this.SetupWunderlistApi
   }
