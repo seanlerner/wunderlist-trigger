@@ -1,0 +1,11 @@
+{
+  "id":            3707530699,
+  "created_at":    "2018-03-30T16:27:10.565Z",
+  "created_by_id": 82554944,
+  "completed":     false,
+  "starred":       false,
+  "list_id":       345017110,
+  "revision":      1,
+  "title":         "bananas",
+  "type":          "task"
+}

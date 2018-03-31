@@ -1,0 +1,38 @@
+[
+  {
+    "id": 3692130654,
+    "created_at": "2018-03-25T20:44:08.540Z",
+    "created_by_id": 82554944,
+    "created_by_request_id": "498d3ffc44ddfa2f275b:697e6f2f-baf6-403a-9dbe-ac3b3b52baff:a87caca2-d575-43ff-a3ea-2c06-1fe8841a:82554944:lwa6b9669befd21cec8c7b9e9b6c8d81",
+    "completed": false,
+    "starred": false,
+    "list_id": 344375177,
+    "revision": 1,
+    "title": "item a",
+    "type": "task"
+  },
+  {
+    "id": 3692130751,
+    "created_at": "2018-03-25T20:44:10.498Z",
+    "created_by_id": 82554944,
+    "created_by_request_id": "498d3ffc44ddfa2f275b:697e6f2f-baf6-403a-9dbe-ac3b3b52baff:a87caca2-d575-43ff-a3ea-2c06-1fe8841a:82554944:lwd7cc2a8113953888b3b9374395924e",
+    "completed": false,
+    "starred": false,
+    "list_id": 344375177,
+    "revision": 1,
+    "title": "item b",
+    "type": "task"
+  },
+  {
+    "id": 3692130818,
+    "created_at": "2018-03-25T20:44:11.848Z",
+    "created_by_id": 82554944,
+    "created_by_request_id": "498d3ffc44ddfa2f275b:697e6f2f-baf6-403a-9dbe-ac3b3b52baff:a87caca2-d575-43ff-a3ea-2c06-1fe8841a:82554944:lw6319a9ed2ae7dd0c0545af65da246b",
+    "completed": false,
+    "starred": false,
+    "list_id": 344375177,
+    "revision": 1,
+    "title": "item c",
+    "type": "task"
+  }
+]
