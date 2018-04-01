@@ -5,25 +5,27 @@ const fs       = require('fs'),
 module.exports = class Setup {
 
   constructor() {
-    try {
-      this.wunderlist_settings   = new Settings
-      this.clip_trigger_settings = this.get_clip_trigger_settings()
-      return new Promise(this.request_wunderlist_access_token.bind(this))
-    } catch(fail) {
-      return { fail }
-    }
+    if (this.clip_trigger_settings = this.get_clip_trigger_settings())
+      return new Promise(this.request_wunderlist_client_secret.bind(this))
+        .then(result => result)
+        .catch(result => result)
+    else
+      return { fail: 'Please login to Clip Trigger before setting up Wunderlist' }
   }
 
   get_clip_trigger_settings() {
+    this.wunderlist_settings = new Settings
+
     if (fs.existsSync(this.wunderlist_settings.clip_trigger_settings_file)) {
-      const file_content = fs.readFileSync(this.wunderlist_settings.clip_trigger_settings_file)
-      return JSON.parse(file_content)
-    } else {
-      throw 'Please login to Clip Trigger before setting up Wunderlist'
+      const file_content = fs.readFileSync(this.wunderlist_settings.clip_trigger_settings_file),
+            json         = JSON.parse(file_content)
+
+      if (json.clip_trigger_token)
+        return JSON.parse(file_content)
     }
   }
 
-  request_wunderlist_access_token(resolve, reject) {
+  request_wunderlist_client_secret(resolve, reject) {
     this.resolve = resolve
     this.reject  = reject
 
@@ -36,15 +38,25 @@ module.exports = class Setup {
   }
 
   process_response(err, resp, body) {
-    if (err) {
-      this.reject(this.get_err_msg(err))
-      return
-    }
+    console.log({reject: this.reject})
+    console.log({body})
 
-    const current_file_settings = JSON.parse(fs.readFileSync(this.wunderlist_settings.settings_path))
-    current_file_settings.client_secret = body
-    fs.writeFileSync(this.wunderlist_settings.settings_path, JSON.stringify(current_file_settings))
-    this.resolve('Wunderlist setup complete')
+    if (!body)
+      this.reject({ fail: 'Please ensure you have authorized Wunderlist on clip.smallcity.ca' })
+    else if (body && body.fail)
+      this.reject({ fail: body.fail })
+    else if (err)
+      this.reject({ fail: this.get_err_msg(err) })
+    else {
+      const current_file_settings = JSON.parse(fs.readFileSync(this.wunderlist_settings.settings_path))
+      current_file_settings.client_secret = body
+
+
+      if (!(process.env.CT_ENV == 'test'))
+        fs.writeFileSync(this.wunderlist_settings.settings_path, JSON.stringify(current_file_settings))
+
+      this.resolve('Wunderlist setup complete')
+    }
   }
 
   get_err_msg(err) {

@@ -1,6 +1,6 @@
 const request        = require('request'),
       GetListsAsJSON = require('./get_lists_as_json'),
-      headers        = require('./headers')
+      Headers        = require('./headers')
 
 module.exports = class AddTaskToList {
 
@@ -51,7 +51,8 @@ module.exports = class AddTaskToList {
     const url     = 'https://a.wunderlist.com/api/v1/tasks',
           list_id = this.list.id,
           title   = this.body,
-          json    = { list_id, title }
+          json    = { list_id, title },
+          headers = new Headers().get_headers()
 
     request.post(url, { headers, json }, this.process_response.bind(this))
   }

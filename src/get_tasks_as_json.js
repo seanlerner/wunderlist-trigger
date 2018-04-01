@@ -1,5 +1,5 @@
 const request = require('request'),
-      headers = require('./headers')
+      Headers = require('./headers')
 
 module.exports = class Tasks {
 
@@ -17,8 +17,10 @@ module.exports = class Tasks {
   }
 
   request(resolve) {
-    this.resolve = resolve
-    const url    = 'https://a.wunderlist.com/api/v1/tasks?list_id=' + this.list.id
+    this.resolve  = resolve
+    const url     = 'https://a.wunderlist.com/api/v1/tasks?list_id=' + this.list.id,
+          headers = new Headers().get_headers()
+
 
     request({ headers, url }, this.process_response.bind(this))
   }

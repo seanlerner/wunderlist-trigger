@@ -14,21 +14,19 @@ module.exports = class Settings {
 
   assign_environment_settings() {
     const env_config = `${__dirname}/../config/${process.env.CT_ENV}.js`
+
     if (fs.existsSync(env_config))
       Object.assign(this, require(env_config))
   }
 
   assign_user_settings() {
     this.create_settings_file_if_nonexistant()
-    Object.assign(this, require(this.settings_path))
+    const user_settings = JSON.parse(fs.readFileSync(this.settings_path))
+    Object.assign(this, user_settings)
   }
 
   get settings_path() {
     return this.settings_dir + this.settings_file
-  }
-
-  get settings_dir() {
-    return process.env.HOME + '/Library/Application Support/wunderlist-trigger/'
   }
 
   create_settings_file_if_nonexistant() {

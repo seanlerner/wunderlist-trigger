@@ -1,7 +1,18 @@
-const Settings = require('./settings'),
-      settings = new Settings
+const fs       = require('fs'),
+      Settings = require('./settings')
 
-module.exports = {
-  'X-Access-Token': settings.client_secret,
-  'X-Client-ID':    settings.client_id
+module.exports = class Headers {
+
+  get_headers() {
+
+    const settings      = new Settings,
+          user_settings = JSON.parse(fs.readFileSync(settings.settings_path))
+
+    return {
+      'X-Client-ID':    settings.client_id,
+      'X-Access-Token': user_settings.client_secret
+    }
+
+  }
+
 }

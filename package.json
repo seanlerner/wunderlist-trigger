@@ -15,8 +15,8 @@
   },
   "scripts": {
     "test": "CT_ENV=test mocha --recursive --slow 200",
-    "watch": "CT_ENV=test mocha --recursive --watch --watch-extensions json --slow 200",
-    "inspect-brk": "CT_ENV=test mocha --recursive --inspect-brk --slow 200"
+    "inspect-brk": "CT_ENV=test mocha --recursive --inspect-brk --slow 200",
+    "watch": "CT_ENV=test mocha --recursive --watch --watch-extensions json --slow 200"
   },
   "dependencies": {
     "clipboardy": "^1.2.3",

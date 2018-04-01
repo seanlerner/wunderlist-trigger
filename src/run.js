@@ -1,6 +1,5 @@
 const clipboardy                = require('clipboardy'),
       AddTaskToList             = require('./add_task_to_list'),
-      Setup                     = require('./setup'),
       WriteListsToClipboard     = require('./write_lists_to_clipboard'),
       WriteListTasksToClipboard = require('./write_list_tasks_to_clipboard')
 
@@ -25,10 +24,6 @@ module.exports = class Run {
 
       case 'tasks':
         result = await new WriteListTasksToClipboard({ args })
-        break
-
-      case 'setup':
-        result = await new Setup
         break
 
       default:

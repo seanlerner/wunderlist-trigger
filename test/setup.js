@@ -1,11 +1,12 @@
-const assert   = require('assert'),
-      fs       = require('fs'),
-      Setup    = require('../src/setup'),
-      Settings = require('../src/settings')
+const assert            = require('assert'),
+      fs                = require('fs'),
+      Setup             = require('../src/setup'),
+      Settings          = require('../src/settings'),
+      WunderlistTrigger = require('../main')
 
 describe('Setup', () => {
 
-  it('gets wunderlist access token from clip trigger server', async () => {
+  it('new', async () => {
 
     const settings = new Settings
 
@@ -14,16 +15,8 @@ describe('Setup', () => {
       return
     }
 
-    const settings_path = process.env.HOME + '/Library/Application Support/wunderlist-trigger/settings-test.json'
-
-    if (fs.existsSync(settings_path))
-      fs.unlinkSync(settings_path)
-
-    const msg          = await new Setup
-    const new_settings = JSON.parse(fs.readFileSync(settings_path))
-
-    assert.equal(new_settings.client_secret, process.env.WUNDERLIST_TEST_CLIENT_SECRET)
-    assert.equal(msg, 'Wunderlist setup complete')
+    const setup_result = await new Setup
+    assert.equal(setup_result, 'Wunderlist setup complete')
 
   })
 
